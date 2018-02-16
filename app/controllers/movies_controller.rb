@@ -12,17 +12,15 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.all
-    
-    if(params[:sort].to_s == 'title')
+    if params[:sort].to_s == 'title'
       session[:sort] = params[:sort]
-      @movies = @movies.sort_by{|m| m.title }
-    elsif(params[:sort].to_s == 'release')
+      @movies = @movies.sort_by{|m| m.title}
+    elsif params[:sort].to_s == 'release'
       session[:sort] = params[:sort]
       @movies = @movies.sort_by{|m| m.release_date.to_s }
-    elsif(session.has_key?(:sort) )
+    elsif session.has_key?(:sort)
       params[:sort] = session[:sort]
     end
-    
   end
 
   def new
