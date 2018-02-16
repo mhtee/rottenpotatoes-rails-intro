@@ -15,7 +15,7 @@ class MoviesController < ApplicationController
     @redirect = false
 
     if(@checked != nil)
-      @movies = @movies.find_all{ |m| @checked.has_key?(m.rating) and  @checked[m.rating]==true}      
+      @movies = @movies.find_all{ |m| @checked.key?(m.rating) and  @checked[m.rating]==true}      
     end
 
     if params[:sort].to_s == 'title'
@@ -24,15 +24,15 @@ class MoviesController < ApplicationController
     elsif params[:sort].to_s == 'release'
       session[:sort] = params[:sort]
       @movies = @movies.sort_by{|m| m.release_date.to_s }
-    elsif session.has_key?(:sort)
+    elsif session.key?(:sort)
       params[:sort] = session[:sort]
       @redirect = true
     end
 
-    if(params[:ratings] != nil)
+    if (params[:ratings] != nil)
       session[:ratings] = params[:ratings]
       @movies = @movies.find_all{ |m| params[:ratings].key?(m.rating) }
-    elsif(session.has_key?(:ratings) )
+    elsif (session.key?(:ratings) )
       params[:ratings] = session[:ratings]
       @redirect = true
     end
