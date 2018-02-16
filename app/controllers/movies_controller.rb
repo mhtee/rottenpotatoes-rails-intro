@@ -21,6 +21,8 @@ class MoviesController < ApplicationController
     elsif session.has_key?(:sort)
       params[:sort] = session[:sort]
     end
+
+    @all_ratings =  ['G','PG','PG-13','R']
   end
 
   def new
