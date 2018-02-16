@@ -12,9 +12,11 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.all
+
     if(@checked != nil)
       @movies = @movies.find_all{ |m| @checked.has_key?(m.rating) and  @checked[m.rating]==true}      
     end
+
     if params[:sort].to_s == 'title'
       session[:sort] = params[:sort]
       @movies = @movies.sort_by{|m| m.title}
@@ -25,7 +27,22 @@ class MoviesController < ApplicationController
       params[:sort] = session[:sort]
     end
 
+    if(params[:ratings] != nil)
+      session[:ratings] = params[:ratings]
+      @movies = @movies.find_all{ |m| params[:ratings].has_key?(m.rating) }
+    end
+
+    @checked = {}
     @all_ratings =  ['G','PG','PG-13','R']
+
+    @all_ratings.each { |rating|
+      if params[:ratings] == nil
+        @checked[rating] = false
+      else
+        @checked[rating] = params[:ratings].has_key?(rating)
+      end
+    }
+
   end
 
   def new
