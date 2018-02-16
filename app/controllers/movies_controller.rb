@@ -31,24 +31,24 @@ class MoviesController < ApplicationController
 
     if(params[:ratings] != nil)
       session[:ratings] = params[:ratings]
-      @movies = @movies.find_all{ |m| params[:ratings].has_key?(m.rating) }
+      @movies = @movies.find_all{ |m| params[:ratings].key?(m.rating) }
     elsif(session.has_key?(:ratings) )
       params[:ratings] = session[:ratings]
       @redirect = true
     end
 
     if (@redirect)
-      redirect_to movies_path(:sort=>params[:sort], :ratings =>params[:ratings])
+      redirect_to movies_path(:sort => params[:sort], :ratings => params[:ratings])
     end
 
     @checked = {}
-    @all_ratings =  ['G','PG','PG-13','R']
+    @all_ratings = ['G','PG','PG-13','R']
 
     @all_ratings.each { |rating|
       if params[:ratings] == nil
         @checked[rating] = true
       else
-        @checked[rating] = params[:ratings].has_key?(rating)
+        @checked[rating] = params[:ratings].key?(rating)
       end
     }
 
